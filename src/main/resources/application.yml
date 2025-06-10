@@ -26,3 +26,4 @@ logging:
   level:
     org.springframework.data.redis: DEBUG
     io.lettuce.core: DEBUG
+    org.springframework.boot.autoconfigure.data.redis: DEBUG
