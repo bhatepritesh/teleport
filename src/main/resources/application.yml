@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: tracking-service
+  r2dbc:
+    url: r2dbc:oracle://localhost:1521/xe
+    username: teleport_schema
+    password: teleport123
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    user: teleport_schema
+    password: teleport123
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  profiles:
+    active: dev
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+    liquibase: DEBUG
+
+tracking:
+  rate-limit: 10  # fallback/default value

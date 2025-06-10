@@ -1,0 +1,28 @@
+# ========== General ==========
+*.log
+.DS_Store
+
+# ========== Maven ==========
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# ========== STS (Spring Tool Suite) ==========
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# ========== IntelliJ IDEA ==========
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ========== Exceptions (allow nested target/build in src directories) ==========
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
