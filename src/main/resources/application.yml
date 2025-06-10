@@ -19,3 +19,4 @@ tracking:
 logging:
   level:
     org.springframework.data.redis: DEBUG
+    io.lettuce.core: DEBUG
