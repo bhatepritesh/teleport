@@ -19,14 +19,14 @@ import static com.teleport.tracking.constants.TrackingServiceConstants.*;
 public class TrackingNumberServiceImpl implements TrackingService {
 
     private final ReactiveStringRedisTemplate redisTemplate;
-    private final DatabaseClient databaseClient;
+    //private final DatabaseClient databaseClient;
 
     @Value("${tracking.rate-limit}")
     private long rateLimit;
 
-    public TrackingNumberServiceImpl(ReactiveStringRedisTemplate redisTemplate, DatabaseClient databaseClient) {
+    public TrackingNumberServiceImpl(ReactiveStringRedisTemplate redisTemplate/*, DatabaseClient databaseClient*/) {
         this.redisTemplate = redisTemplate;
-        this.databaseClient = databaseClient;
+        //this.databaseClient = databaseClient;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class TrackingNumberServiceImpl implements TrackingService {
     }
 
 
-    private Mono<Void> saveTrackingNumberToDatabase(String trackingNumber, String origin, String destination, String customerId, String customerName, String customerSlug, double weight, OffsetDateTime createdAt) {
+    /*private Mono<Void> saveTrackingNumberToDatabase(String trackingNumber, String origin, String destination, String customerId, String customerName, String customerSlug, double weight, OffsetDateTime createdAt) {
         return databaseClient.sql("INSERT INTO TELEPORT_SCHEMA.TRACKING_NUMBERS (TRACKING_NUMBER, ORIGIN_COUNTRY_ID, DESTINATION_COUNTRY_ID, CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_SLUG, WEIGHT, CREATED_AT) " +
                         "VALUES (:tracking_number, :origin, :destination, :customer_id, :customer_name, :customer_slug, :weight, :created_at)")
                 .bind(TRACKING_NUMBER, trackingNumber)
@@ -89,5 +89,5 @@ public class TrackingNumberServiceImpl implements TrackingService {
                 .bind(WEIGHT, weight)
                 .bind(CREATED_AT, createdAt)
                 .then();
-    }
+    }*/
 }
