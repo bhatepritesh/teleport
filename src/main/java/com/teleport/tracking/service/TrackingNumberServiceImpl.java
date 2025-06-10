@@ -1,6 +1,9 @@
 package com.teleport.tracking.service;
 
 import com.teleport.tracking.exception.RateLimitExceededException;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.reactive.RedisReactiveCommands;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -18,25 +21,34 @@ import static com.teleport.tracking.constants.TrackingServiceConstants.*;
 @Service
 public class TrackingNumberServiceImpl implements TrackingService {
 
-    private final ReactiveStringRedisTemplate redisTemplate;
+    private RedisReactiveCommands<String, String> redisCommands;
+    //private final ReactiveStringRedisTemplate redisTemplate;
     //private final DatabaseClient databaseClient;
 
     @Value("${tracking.rate-limit}")
     private long rateLimit;
 
-    public TrackingNumberServiceImpl(ReactiveStringRedisTemplate redisTemplate/*, DatabaseClient databaseClient*/) {
+    @PostConstruct
+    public void init() {
+        // Hardcoded Redis URI (for Railway)
+        String redisUrl = "redis://default:gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW@switchback.proxy.rlwy.net:22122";
+        RedisClient client = RedisClient.create(redisUrl);
+        this.redisCommands = client.connect().reactive();
+    }
+
+    /*public TrackingNumberServiceImpl(ReactiveStringRedisTemplate redisTemplate*//*, DatabaseClient databaseClient*//*) {
         this.redisTemplate = redisTemplate;
         //this.databaseClient = databaseClient;
-    }
+    }*/
 
     @Override
     public Mono<String> generateAndPersistTrackingNumber(String origin, String destination, String customerId, String customerName, String customerSlug, double weight, OffsetDateTime createdAt) {
         String rateKey = RATE_LIMIT_REDIS_KEY + customerId;
 
-        return redisTemplate.opsForValue().increment(rateKey)
+        return redisCommands.incr(rateKey)
                 .flatMap(rateCount -> {
                     if (rateCount == 1) {
-                        redisTemplate.expire(rateKey, Duration.ofMinutes(1)).subscribe();
+                        redisCommands.expire(rateKey, 60).subscribe();
                     }
                     if (rateCount > rateLimit) {
                         return Mono.error(new RateLimitExceededException(RATE_LIMIT_EXCEEDED));
@@ -53,8 +65,7 @@ public class TrackingNumberServiceImpl implements TrackingService {
     }
 
     private Mono<String> generateTrackingNumberFromRedisCounter(String origin, String destination) {
-        String key = TRACKING_COUNTER_REDIS_KEY;
-        return redisTemplate.opsForValue().increment(key)
+        return redisCommands.incr(TRACKING_COUNTER_REDIS_KEY)
                 .map(counter -> buildFormattedTrackingNumber(origin, destination, counter));
     }
 
