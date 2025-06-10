@@ -4,7 +4,7 @@ spring:
 
   redis:
     host: ${REDISHOST}
-    port: ${REDISPORT}
+    port: 6379
     password: ${REDISPASSWORD}
 
   liquibase:
