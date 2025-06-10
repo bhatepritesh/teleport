@@ -2,8 +2,14 @@ spring:
   application:
     name: tracking-service
 
+  profiles:
+    active: default
+
   redis:
     url: redis://default:gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW@redis.railway.internal:6379
+    host: redis.railway.internal
+    port: 6379
+    password: gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW
 
   liquibase:
     enabled: false
