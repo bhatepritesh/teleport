@@ -3,9 +3,7 @@ spring:
     name: tracking-service
 
   redis:
-    host: ${REDISHOST}
-    port: 6379
-    password: ${REDISPASSWORD}
+    url: redis://default:gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW@redis.railway.internal:6379
 
   liquibase:
     enabled: false
