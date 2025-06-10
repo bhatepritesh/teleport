@@ -6,10 +6,7 @@ spring:
     active: default
 
   redis:
-    url: redis://default:gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW@redis.railway.internal:6379
-    host: redis.railway.internal
-    port: 6379
-    password: gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW
+    url: redis://default:gYKxxMVbJRSSYRdAaeuPVcDswvWJdxQW@switchback.proxy.rlwy.net:22122
 
   liquibase:
     enabled: false

@@ -12,6 +12,7 @@ public class TrackingApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(TrackingApplication.class, args);
 		System.out.println("Active profile(s): " + Arrays.toString(context.getEnvironment().getActiveProfiles()));
+		System.out.println("Redis URL: " + context.getEnvironment().getProperty("spring.redis.url"));
 	}
 
 }
